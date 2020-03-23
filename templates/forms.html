@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NaNo-panel for CloudFlare</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+     <link rel="stylesheet" href="/static/css/all.css">
+    <!-- orion icons-->
+    <link rel="stylesheet" href="/static/css/orionicons.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  <style>
+
+</style>
+  </head>
+  <body class="row2">
+    <!-- navbar-->
+    <header class="header">
+      <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
+       {% if zones == 0 %}
+          <div class="zone_wrapper">
+		  <div class="current_zone" data_id="none">
+		    <div class="zone">
+		      <img src="/static/img/select.svg">
+		      <span class="zone-txt">NO</span>
+		      <span class="fa fa-chevron-down chevron"></span>
+		    </div>
+		</div>
+        <div class="more_zone">
+            {% if lang == "cn" %}
+         <div style="margin:0 auto;"><input type="button" value="+添加CNAME" class="btn btn-outline-primary button--text-thick add_cname"><input type="button" value="+新增域名" class="btn btn-outline-primary button--text-thick add_zone"><i class="fa fa-question-circle" aria-hidden="true" style="float: none;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="新增会在CF下创建一个属于该域名的一个域（仅通过Partner创建的cname也如此，且此列表下的域名状态为active）。但如果要使除了cname外的其他记录生效，需要把所新增的域名的NS记录设置为CF提供的NS（未设置时状态为pending）。" data-original-title="" title=""></i></div>
+            <p>没有任何域名哦</p>
+            {% else %}
+            <div style="margin:0 auto;"><input type="button" value="+Create CNAME" class="btn btn-outline-primary button--text-thick add_cname"><input type="button" value="+New domain" class="btn btn-outline-primary button--text-thick add_zone"><i class="fa fa-question-circle" aria-hidden="true" style="float: none;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="The new addition will create a zone that belongs to the domain name under CF (the same is true for cname created through Partner, and the status of the domain name under this list is active). However, if you want to make records other than cname effective, you need to set the NS record of the newly added domain name to the NS provided by CF (the status is pending when not set)." data-original-title="" title=""></i></div>
+            <p>NO domain</p>
+            {% endif %}
+
+        </div>
+          </div>
+       {% else %}
+          <div class="zone_wrapper">
+		  <div class="current_zone"  data_id="none">
+		    <div class="zone">
+		      <img src="/static/img/select.svg">
+		      <span class="zone-txt"></span>
+		      <span class="fa fa-chevron-down chevron"></span>
+		    </div>
+		</div>
+
+		       <div class="more_zone">
+                   {% if lang == "cn" %}
+                        <div style="margin:0 auto;"><input type="button" value="+添加CNAME" class="btn btn-outline-primary button--text-thick add_cname"><input type="button" value="+新增域名" class="btn btn-outline-primary button--text-thick add_zone"><i class="fa fa-question-circle" aria-hidden="true" style="float: none;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="新增会在CF下创建一个属于该域名的一个域（仅通过Partner创建的cname也如此，且此列表下的域名状态为active）。但如果要使除了cname外的其他记录生效，需要把所新增的域名的NS记录设置为CF提供的NS（未设置时状态为pending）。" data-original-title="" title=""></i></div>
+                   {% else %}
+                        <div style="margin:0 auto;"><input type="button" value="+Create CNAME" class="btn btn-outline-primary button--text-thick add_cname"><input type="button" value="+New domain" class="btn btn-outline-primary button--text-thick add_zone"><i class="fa fa-question-circle" aria-hidden="true" style="float: none;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="The new addition will create a zone that belongs to the domain name under CF (the same is true for cname created through Partner, and the status of the domain name under this list is active). However, if you want to make records other than cname effective, you need to set the NS record of the newly added domain name to the NS provided by CF (the status is pending when not set)." data-original-title="" title=""></i></div>
+                   {% endif %}
+		        {% for zone in zones  %}
+                   {% if zone.status == 'active' %}
+		        <div class="zone" data_id={{zone.id}} zone_name={{zone.name}} >
+                   <div class="s_zone" data-value="cn" data-act="resolve_list">
+		           <img src="/static/img/ch.svg">
+		           <span class="zone-txt" >{{zone.name}}</span>
+		        </div>
+                </div>
+                   {% else %}
+<!--                 <div class="zone" data-value="cn" data_id={{zone.id}} zone_name={{zone.name}}>
+		           <img src="/static/img/pd.svg">
+		           <span class="zone-txt" >{{zone.name}}</span>
+		        </div>-->
+                   {% endif %}
+                {% endfor %}
+       {% endif %}
+            <ul id="page-to" class="pagination pagination4"><li class="prev disabled" jp-role="prev" jp-data="0"><a href="javascript:void(0);">&lt;&lt;</a></li><li class="page active" jp-role="page" jp-data="1"><a href="javascript:void(0);"> 1 / 1 </a></li><li class="next disabled" jp-role="next" jp-data="2"><a href="javascript:void(0);">&gt;&gt;</a></li></ul>
+		  </div>
+		</div>
+        <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
+          <li class="nav-item dropdown mr-3">
+              <i class="ico_loading" id="ico_loading"></i>
+          </li>
+          <li class="nav-item dropdown ml-auto"><a id="userInfo" href="https://github.com/nanodog" target="_blank" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="/static/img/avatar-6.jpg" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
+            <div aria-labelledby="userInfo" class="dropdown-menu"><a href="https://github.com/nanodog" target="_blank" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">{{user_name}}</strong><small>Web Developer</small></a>
+             {% if lang == "cn" %}
+              <div class="dropdown-divider"></div><a href="/logout" class="dropdown-item lang_mark">退出账号</a>
+             {% else %}
+                <div class="dropdown-divider"></div><a href="/logout" class="dropdown-item lang_mark">logout</a>
+             {% endif %}
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div class="pn-ProductNav_Wrapper all_menu">
+<nav id="pnProductNav" class="pn-ProductNav dragscroll" data-overflowing="right" style="display: none">
+<div id="pnProductNavContents" class="pn-ProductNav_Contents pn-ProductNav_Contents-no-transition" style="transform: none;">
+<a href="#" class="pn-ProductNav_Link overview" aria-selected="false"><img src="/static/img/statistic.svg">Analysic</a>
+<a href="#" class="pn-ProductNav_Link SSL" aria-selected="false"><img src="/static/img/SSL.svg">SSL/TLS</a>
+<a href="#" class="pn-ProductNav_Link caching" aria-selected="false"><img src="/static/img/caching.svg">caching</a>
+<span id="pnIndicator" class="pn-ProductNav_Indicator" style="transform: translateX(2083.85px) scaleX(1.14037); background-color: rgb(134, 113, 0);"></span>
+</div>
+</nav>
+<button id="pnAdvancerLeft" class="pn-Advancer pn-Advancer_Left" type="button">
+<svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024"><path d="M445.44 38.183L-2.53 512l447.97 473.817 85.857-81.173-409.6-433.23v81.172l409.6-433.23L445.44 38.18z"></path></svg>
+</button>
+<button id="pnAdvancerRight" class="pn-Advancer pn-Advancer_Right" type="button">
+<svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024"><path d="M105.56 985.817L553.53 512 105.56 38.183l-85.857 81.173 409.6 433.23v-81.172l-409.6 433.23 85.856 81.174z"></path></svg>
+</button>
+</div>
+    <div class="pn-ProductNav_Wrapper ssl_menu" style="display: none;">
+<nav id="pnProductNav_ssl" class="pn-ProductNav dragscroll" data-overflowing="none" >
+<div id="pnProductNavContents" class="pn-ProductNav_Contents pn-ProductNav_Contents-no-transition" style="transform: none;">
+<a href="#" class="pn-ProductNav_Link ssl_overview" aria-selected="false">overview</a>
+<a href="#" class="pn-ProductNav_Link ssl_edge" aria-selected="false">Edge Certificates</a>
+<a href="#" class="pn-ProductNav_Link SSL" aria-selected="false">Custom</a>
+
+<span id="pnIndicator" class="pn-ProductNav_Indicator" style="transform: translateX(2083.85px) scaleX(1.14037); background-color: rgb(134, 113, 0);"></span>
+</div>
+</nav>
+<button id="pnAdvancerLeft" class="pn-Advancer pn-Advancer_Left" type="button">
+<svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024"><path d="M445.44 38.183L-2.53 512l447.97 473.817 85.857-81.173-409.6-433.23v81.172l409.6-433.23L445.44 38.18z"></path></svg>
+</button>
+<button id="pnAdvancerRight" class="pn-Advancer pn-Advancer_Right" type="button">
+<svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024"><path d="M105.56 985.817L553.53 512 105.56 38.183l-85.857 81.173 409.6 433.23v-81.172l-409.6 433.23 85.856 81.174z"></path></svg>
+</button>
+</div>
+    <div class=" align-items-stretch">
+                    <div class="row2">
+              <!-- Basic Form-->
+              <!-- Horizontal Form-->
+
+                    <div class="card fy rd " style="display:none">
+                        <div class="card-header">
+                          <p class="text-uppercase mb-0 button--text-thick" id="drop_name" align="center" ></p>
+                          <input type="submit" value="+添加解析" class="btn btn-outline-primary add_r button--text-thick">
+                        </div>
+                        <div class="card-body">
+                          <table class="table table-hover card-text">
+                            <thead>
+                              <tr>
+                                <th>cname详情<i class="fa fa-question-circle" aria-hidden="true" style="float: right;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover " data-content="查看通过本站设置的cname转发地址"></i></th>
+                                <th>主机记录</th>
+                                <th>记录类型</th>
+                                <th>记录值</th>
+                                <th>TTL<i class="fa fa-question-circle" aria-hidden="true" style="float: right;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="Unit:(s) 1 means auto"></i></th>
+                                <th>最后操作时间</th>
+                                <th>Proxied<i class="fa fa-question-circle" aria-hidden="true" style="float: right;" data-toggle="popover" data-container="body" data-placement="top" data-trigger="hover" data-content="开启Proxied获得cloudflare的安全和优势（建议视网络所在地决定）(default:False)"></i></th>
+                                <th>操作</th>
+                              </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            </tbody>
+                          </table>
+                            <ul id="page-to2" class="pagination pagination4"></ul>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+                <div class="page-holder w-100 d-flex flex-wrap domain_lists">
+                       {% if zones == 0 %}
+                          <p>
+                          NO DOMAINS
+                          </p>
+                       {% else %}
+                          {% for zone in zones  %}
+                                  {% if zone.status == 'active' %}
+                    <div class="col-md-4 col-xl-2 "><div class="card zone_cards z_active"   data-toggle="button" data_id={{zone.id}} zone_name={{zone.name}}>
+                        <div class="card-header">
+                        <div class="fa fa-times btn btn-xs" style="float: right;" aria-hidden="true" data-act="zone_delete">
+                        </div>
+                    </div><div class="card-body btn btn c_c"  data-act="resolve_list">
+                                      <div class="drop_tr drop_name" ><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{zone.name}}</font></font></div>
+                                      <div class="fa fa-check-circle fa-lg" aria-hidden="true"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{zone.status}}</font></font></div>
+                  </div></div></div>
+                                  {% else %}
+                    <div class="col-md-4 col-xl-2 "><div class="card zone_cards z_pending"  data_id={{zone.id}} zone_name={{zone.name}}>
+                        <div class="card-header">
+                        <div class="fa fa-times btn btn-xs" style="float: right;" data-act="zone_delete" aria-hidden="true">
+                        </div>
+                        </div> <div class="card-body"  data-act="resolve_list">
+                                      <div class="drop_tr drop_name " data-act="resolve_list" >{{zone.name}}</div>
+                                      <div class=" fa fa-clock fa-lg" aria-hidden="true" >{{zone.status}}</div>
+                                      <div class="fa fa-bell" style="float:right;" data-toggle="popover" title="For full active,you should set NS as followings:" data-container="body" data-placement="top" data-trigger="hover" data-content= "NS1:{{zone.name_servers.0}} NS2:{{zone.name_servers.1}}" ></div>
+
+                        </div></div></div>
+                                  <!--<td class="drop-down-content" data_id={{zone.id}}>-->
+                                   <!--<li data-act="zone_delete"><a  href="JavaScript:void(0);" data_a="setting" class="button&#45;&#45;text-thick zone_delete">删除</a></li>-->
+                                  <!--</td>-->
+                                  {% endif %}
+                          {% endfor %}
+                       {% endif %}
+
+                  <ul id="page-to" class="pagination pagination4"></ul>
+                </div>
+
+                  </div>
+                    </div>
+
+      <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-8">
+
+            </div>
+        </div>
+        <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-left text-primary">
+                <p class="mb-2 mb-md-0">nano-panel &copy; 2019-2020</p>
+              </div>
+              <div class="col-md-6 text-center text-md-right text-gray-400">
+                <p class="mb-0">Design by <a href="https://bootstrapious.com/admin-templates" class="external text-gray-400">Bootstrapious</a></p>
+                <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="/static/js/sweetalert.min.js"></script>
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/js/popper.js/umd/popper.min.js"> </script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/jquery/jquery.cookie.js"> </script>
+    <script src="/static/js/jq-paginator.js"></script>
+    <script src="/static/js/index.js" ></script>
+    <script src="/static/js/dnsrecords.js"></script>
+    <script src="/static/js/front.js"></script>
+    <script>
+        $(function () {
+	         $("[data-toggle='popover']").popover();
+        });
+               var SETTINGS = {
+            navBarTravelling: false,
+            navBarTravelDirection: "",
+             navBarTravelDistance: 150
+        }
+
+        var colours = {
+            0: "#867100",
+            1: "#7F4200",
+            2: "#99813D",
+            3: "#40FEFF",
+            4: "#14CC99",
+            5: "#00BAFF",
+            6: "#0082B2",
+            7: "#B25D7A",
+            8: "#00FF17",
+            9: "#006B49",
+            10: "#00B27A",
+            11: "#996B3D",
+            12: "#CC7014",
+            13: "#40FF8C",
+            14: "#FF3400",
+            15: "#ECBB5E",
+            16: "#ECBB0C",
+            17: "#B9D912",
+            18: "#253A93",
+            19: "#125FB9",
+        }
+
+        document.documentElement.classList.remove("no-js");
+        document.documentElement.classList.add("js");
+
+        // Out advancer buttons
+        var pnAdvancerLeft = document.getElementById("pnAdvancerLeft");
+        var pnAdvancerRight = document.getElementById("pnAdvancerRight");
+        // the indicator
+        var pnIndicator = document.getElementById("pnIndicator");
+
+        var pnProductNav = document.getElementById("pnProductNav");
+        var pnProductNavContents = document.getElementById("pnProductNavContents");
+
+        pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+
+        // Set the indicator
+        moveIndicator(pnProductNav.querySelector("[aria-selected=\"true\"]"), colours[0]);
+
+        // Handle the scroll of the horizontal container
+        var last_known_scroll_position = 0;
+        var ticking = false;
+
+        function doSomething(scroll_pos) {
+            pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+        }
+
+        pnProductNav.addEventListener("scroll", function() {
+            last_known_scroll_position = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    doSomething(last_known_scroll_position);
+                    ticking = false;
+                });
+            }
+            ticking = true;
+        });
+
+
+        pnAdvancerLeft.addEventListener("click", function() {
+            // If in the middle of a move return
+            if (SETTINGS.navBarTravelling === true) {
+                return;
+            }
+            // If we have content overflowing both sides or on the left
+            if (determineOverflow(pnProductNavContents, pnProductNav) === "left" || determineOverflow(pnProductNavContents, pnProductNav) === "both") {
+                // Find how far this panel has been scrolled
+                var availableScrollLeft = pnProductNav.scrollLeft;
+                // If the space available is less than two lots of our desired distance, just move the whole amount
+                // otherwise, move by the amount in the settings
+                if (availableScrollLeft < SETTINGS.navBarTravelDistance * 2) {
+                    pnProductNavContents.style.transform = "translateX(" + availableScrollLeft + "px)";
+                } else {
+                    pnProductNavContents.style.transform = "translateX(" + SETTINGS.navBarTravelDistance + "px)";
+                }
+                // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
+                pnProductNavContents.classList.remove("pn-ProductNav_Contents-no-transition");
+                // Update our settings
+                SETTINGS.navBarTravelDirection = "left";
+                SETTINGS.navBarTravelling = true;
+            }
+            // Now update the attribute in the DOM
+            pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+        });
+
+        pnAdvancerRight.addEventListener("click", function() {
+            // If in the middle of a move return
+            if (SETTINGS.navBarTravelling === true) {
+                return;
+            }
+            // If we have content overflowing both sides or on the right
+            if (determineOverflow(pnProductNavContents, pnProductNav) === "right" || determineOverflow(pnProductNavContents, pnProductNav) === "both") {
+                // Get the right edge of the container and content
+                var navBarRightEdge = pnProductNavContents.getBoundingClientRect().right;
+                var navBarScrollerRightEdge = pnProductNav.getBoundingClientRect().right;
+                // Now we know how much space we have available to scroll
+                var availableScrollRight = Math.floor(navBarRightEdge - navBarScrollerRightEdge);
+                // If the space available is less than two lots of our desired distance, just move the whole amount
+                // otherwise, move by the amount in the settings
+                if (availableScrollRight < SETTINGS.navBarTravelDistance * 2) {
+                    pnProductNavContents.style.transform = "translateX(-" + availableScrollRight + "px)";
+                } else {
+                    pnProductNavContents.style.transform = "translateX(-" + SETTINGS.navBarTravelDistance + "px)";
+                }
+                // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
+                pnProductNavContents.classList.remove("pn-ProductNav_Contents-no-transition");
+                // Update our settings
+                SETTINGS.navBarTravelDirection = "right";
+                SETTINGS.navBarTravelling = true;
+            }
+            // Now update the attribute in the DOM
+            pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+        });
+
+        pnProductNavContents.addEventListener(
+            "transitionend",
+            function() {
+                // get the value of the transform, apply that to the current scroll position (so get the scroll pos first) and then remove the transform
+                var styleOfTransform = window.getComputedStyle(pnProductNavContents, null);
+                var tr = styleOfTransform.getPropertyValue("-webkit-transform") || styleOfTransform.getPropertyValue("transform");
+                // If there is no transition we want to default to 0 and not null
+                var amount = Math.abs(parseInt(tr.split(",")[4]) || 0);
+                pnProductNavContents.style.transform = "none";
+                pnProductNavContents.classList.add("pn-ProductNav_Contents-no-transition");
+                // Now lets set the scroll position
+                if (SETTINGS.navBarTravelDirection === "left") {
+                    pnProductNav.scrollLeft = pnProductNav.scrollLeft - amount;
+                } else {
+                    pnProductNav.scrollLeft = pnProductNav.scrollLeft + amount;
+                }
+                SETTINGS.navBarTravelling = false;
+            },
+            false
+        );
+
+        // Handle setting the currently active link
+        pnProductNavContents.addEventListener("click", function(e) {
+            var links = [].slice.call(document.querySelectorAll(".pn-ProductNav_Link"));
+            links.forEach(function(item) {
+                item.setAttribute("aria-selected", "false");
+            })
+            e.target.setAttribute("aria-selected", "true");
+            // Pass the clicked item and it's colour to the move indicator function
+            moveIndicator(e.target, colours[links.indexOf(e.target)]);
+        });
+
+        // var count = 0;
+        function moveIndicator(item, color) {
+            var textPosition = item.getBoundingClientRect();
+            var container = pnProductNavContents.getBoundingClientRect().left;
+            var distance = textPosition.left - container;
+             var scroll = pnProductNavContents.scrollLeft;
+            pnIndicator.style.transform = "translateX(" + (distance + scroll) + "px) scaleX(" + textPosition.width * 0.01 + ")";
+            // count = count += 100;
+            // pnIndicator.style.transform = "translateX(" + count + "px)";
+
+            if (color) {
+                pnIndicator.style.backgroundColor = color;
+            }
+        }
+
+        function determineOverflow(content, container) {
+            var containerMetrics = container.getBoundingClientRect();
+            var containerMetricsRight = Math.floor(containerMetrics.right);
+            var containerMetricsLeft = Math.floor(containerMetrics.left);
+            var contentMetrics = content.getBoundingClientRect();
+            var contentMetricsRight = Math.floor(contentMetrics.right);
+            var contentMetricsLeft = Math.floor(contentMetrics.left);
+             if (containerMetricsLeft > contentMetricsLeft && containerMetricsRight < contentMetricsRight) {
+                return "both";
+            } else if (contentMetricsLeft < containerMetricsLeft) {
+                return "left";
+            } else if (contentMetricsRight > containerMetricsRight) {
+                return "right";
+            } else {
+                return "none";
+            }
+        }
+
+        /**
+         * @fileoverview dragscroll - scroll area by dragging
+         * @version 0.0.8
+         *
+         * @license MIT, see http://github.com/asvd/dragscroll
+         * @copyright 2015 asvd <heliosframework@gmail.com>
+         */
+
+
+        (function (root, factory) {
+            if (typeof define === 'function' && define.amd) {
+                define(['exports'], factory);
+            } else if (typeof exports !== 'undefined') {
+                factory(exports);
+            } else {
+                factory((root.dragscroll = {}));
+            }
+        }(this, function (exports) {
+            var _window = window;
+            var _document = document;
+            var mousemove = 'mousemove';
+            var mouseup = 'mouseup';
+            var mousedown = 'mousedown';
+            var EventListener = 'EventListener';
+            var addEventListener = 'add'+EventListener;
+            var removeEventListener = 'remove'+EventListener;
+            var newScrollX, newScrollY;
+
+            var dragged = [];
+            var reset = function(i, el) {
+                for (i = 0; i < dragged.length;) {
+                    el = dragged[i++];
+                    el = el.container || el;
+                    el[removeEventListener](mousedown, el.md, 0);
+                    _window[removeEventListener](mouseup, el.mu, 0);
+                    _window[removeEventListener](mousemove, el.mm, 0);
+                }
+
+                // cloning into array since HTMLCollection is updated dynamically
+                dragged = [].slice.call(_document.getElementsByClassName('dragscroll'));
+                for (i = 0; i < dragged.length;) {
+                    (function(el, lastClientX, lastClientY, pushed, scroller, cont){
+                        (cont = el.container || el)[addEventListener](
+                            mousedown,
+                            cont.md = function(e) {
+                                if (!el.hasAttribute('nochilddrag') ||
+                                    _document.elementFromPoint(
+                                        e.pageX, e.pageY
+                                    ) == cont
+                                ) {
+                                    pushed = 1;
+                                    lastClientX = e.clientX;
+                                    lastClientY = e.clientY;
+
+                                    e.preventDefault();
+                                }
+                            }, 0
+                        );
+
+                        _window[addEventListener](
+                            mouseup, cont.mu = function() {pushed = 0;}, 0
+                        );
+
+                        _window[addEventListener](
+                            mousemove,
+                            cont.mm = function(e) {
+                                if (pushed) {
+                                    (scroller = el.scroller||el).scrollLeft -=
+                                        newScrollX = (- lastClientX + (lastClientX=e.clientX));
+                                    scroller.scrollTop -=
+                                        newScrollY = (- lastClientY + (lastClientY=e.clientY));
+                                    if (el == _document.body) {
+                                        (scroller = _document.documentElement).scrollLeft -= newScrollX;
+                                        scroller.scrollTop -= newScrollY;
+                                    }
+                                }
+                            }, 0
+                        );
+                     })(dragged[i++]);
+                }
+            }
+
+
+            if (_document.readyState == 'complete') {
+                reset();
+            } else {
+                _window[addEventListener]('load', reset, 0);
+            }
+
+            exports.reset = reset;
+        }));
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  </body>
+</html>

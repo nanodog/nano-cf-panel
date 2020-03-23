@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>nano panel for partner</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+        <!-- JavaScript <script src="/static/js/crsf.js"></script> files-->
+        <script src="/static/jquery/jquery.js"></script>
+        <script src="/static/jquery/jquery.cookie.js"></script>
+
+        <script src="/static/js/login-register.js" ></script>
+        <script src="/static/js/index.js" ></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <link href="/static/css/login-register.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/font-awesome.css">
+    <!-- Bootstrap CSS-->
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Font Awesome CSS-->
+
+
+    <!-- orion icons-->
+    <link rel="stylesheet" href="/static/css/orionicons.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+
+<div id="ban1c">&nbsp;</div>
+<div class="page-holder d-flex align-items-center" style="text-align:center">
+    <div class="translate_wrapper">
+		  <div class="current_lang">
+		    <div class="lang">
+		      <img src="https://image.flaticon.com/icons/svg/299/299914.svg"">
+		      <span class="lang-txt">cn</span>
+		      <span class="fa fa-chevron-down chevron"></span>
+		    </div>
+		</div>
+		<div class="more_lang">
+
+		    <div class="lang selected" data-value="cn">
+		      <img src="https://image.flaticon.com/icons/svg/299/299914.svg">
+		      <span class="lang-txt">cn</span>
+		    </div>
+
+		    <div class="lang" data-value="en">
+		      <img src="https://image.flaticon.com/icons/svg/299/299722.svg">
+		      <span class="lang-txt">English<span> (US)</span></span>
+		    </div>
+		  </div>
+
+
+		</div>
+      <div class="container">
+        <div class="row align-items-center py-5">
+          <div class="col-5 col-lg-7 mx-auto mb-5 mb-lg-0">
+            <div class="pr-lg-5 lo"><img src="/static/img/cloudimg.gif" alt="" class="img-fluid"></div>
+          </div>
+          <div class="col-lg-5 px-lg-4 lo">
+            <h1 class="text-base text-primary  mb-4 tra1">A nano-panel for CloudFlare</h1>
+            
+            <h2 class="mb-4 tra2">Already had Cloudflare account,login here</h2>
+            <div class="px-lg-4" id="main mt4">
+                 <a class="btn big-login" id="active" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();"><p class="log_1" id="hero__title_1">account login</p></a>
+								 <h2 class="mb-4 tra3">Not have account for Cloudflare,register</h2>
+                 <a class="btn big-register" id="active" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();"><p class="log_2" id="hero__title_1">Register account</p></a>
+								 <p class="text-muted tra4">*Note:This panel would not record your password.Login is only to request the API from Cloudflare</p>
+						</div>
+          </div>
+        </div>
+        <div class="modal fade login in" id="loginModal">
+            <div class="modal-dialog login animated">
+                <div class="modal-content">
+                   <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="box">
+                               <div class="content">
+                                  <div class>
+                                      <a class="circle github" href="https://github.com/nanodog" target="_blank">
+                                          <i class="fa fa-github fa-fw"></i>
+                                          <span></span>
+                                      </a>
+                                  </div>
+                                  <div class="error" id="err"></div>
+                                  <div class="form loginBox" id="login-form">
+                                      <div id="login-loading" class="loading-mask">
+                                         <img class="loading-icon" src="/static/img/loading.gif">
+                                      </div>
+                                      <form method="post" accept-charset="UTF-8" id="loginform">
+                                      {% csrf_token %}
+                                      <input id="email" class="form-control" type="text" placeholder="Email" name="mail">
+                                      <input id="pass" class="form-control" type="password" placeholder="Password" name="pass">
+                                      <input id="login_s" class="btn btn-default btn-login" type="button" value="Login" onclick="click_login()">
+                                      </form>
+                                  </div>
+                               </div>
+                          </div>
+                          <div class="box">
+                              <div class="content registerBox" style="display:none;">
+                               <div class="form" id="register-form">
+                                      <div id="register-loading" class="loading-mask">
+                                         <img class="loading-icon" src="/static/img/loading.gif"></img>
+                                      </div>
+                                  <form method="post" html="{:multipart=>true}" data-remote="true" id="registerform" accept-charset="UTF-8">
+                                        {% csrf_token %}
+                                  <input id="regmail" class="form-control" type="text" placeholder="Email" name="regmail">
+                                  <input id="regpass" class="form-control" type="password" placeholder="Password" name="regpass">
+                                      <input id="regpass2" class="form-control" type="password" placeholder="input your Password again" name="regpass">
+  
+                                  <input class="btn btn-default btn-register" id="register_s" type="button" value="Create account" name="commit" onclick="click_register()">
+                                  </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <div class="forgot login-footer" style="display: none;">
+                              <span class="tra5">click to
+                                   <a href="javascript: showRegisterForm();" class="tra5">create an account</a>
+                              ?</span>
+                          </div>
+                          <div class="forgot register-footer" style="">
+                               <span class="tra6">Already have an account?</span>
+                               <a href="javascript: showLoginForm();" class="tra7">Login</a>
+                          </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <p class="mt-5 mb-0 text-gray-400 text-center"><a href="https://github.com/nanodog" class="external text-gray-400 tra8" target="_blank" >here a link to github for code</a></p>
+        <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)                 -->
+      </div>
+    </div>
+
+  </body>
+</html>

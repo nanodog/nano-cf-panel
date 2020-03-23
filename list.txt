@@ -1,0 +1,175 @@
+©¦  .gitattributes
+©¦  LICENSE
+©¦  list.txt
+©¦  manage.py
+©¦  README.md
+©¦  
+©À©¤.idea
+©¦  ©¦  dbnavigator.xml
+©¦  ©¦  encodings.xml
+©¦  ©¦  misc.xml
+©¦  ©¦  modules.xml
+©¦  ©¦  nano-cf-panel.iml
+©¦  ©¦  vcs.xml
+©¦  ©¦  workspace.xml
+©¦  ©¦  
+©¦  ©¸©¤codeStyles
+©¦          Project.xml
+©¦          
+©À©¤domain_manage
+©¦  ©¦  admin.py
+©¦  ©¦  apps.py
+©¦  ©¦  models.py
+©¦  ©¦  urls.py
+©¦  ©¦  views.py
+©¦  ©¦  __init__.py
+©¦  ©¦  
+©¦  ©À©¤tamplatetages
+©¦  ©¦      tagforpage.py
+©¦  ©¦      __init__.py
+©¦  ©¦      
+©¦  ©¸©¤__pycache__
+©¦          admin.cpython-37.pyc
+©¦          models.cpython-37.pyc
+©¦          urls.cpython-37.pyc
+©¦          views.cpython-37.pyc
+©¦          __init__.cpython-37.pyc
+©¦          
+©À©¤mysite
+©¦  ©¦  settings.py
+©¦  ©¦  settings.pyc
+©¦  ©¦  urls.py
+©¦  ©¦  urls.pyc
+©¦  ©¦  views.py
+©¦  ©¦  views.pyc
+©¦  ©¦  wsgi.py
+©¦  ©¦  wsgi.pyc
+©¦  ©¦  __init__.py
+©¦  ©¦  __init__.pyc
+©¦  ©¦  
+©¦  ©¸©¤__pycache__
+©¦          settings.cpython-37.pyc
+©¦          urls.cpython-37.pyc
+©¦          views.cpython-37.pyc
+©¦          wsgi.cpython-37.pyc
+©¦          __init__.cpython-37.pyc
+©¦          
+©À©¤static
+©¦  ©À©¤css
+©¦  ©¦      all.css
+©¦  ©¦      bootstrap-grid.css
+©¦  ©¦      bootstrap-grid.min.css
+©¦  ©¦      bootstrap-reboot.css
+©¦  ©¦      bootstrap-reboot.min.css
+©¦  ©¦      bootstrap.css
+©¦  ©¦      bootstrap.min.css
+©¦  ©¦      custom.css
+©¦  ©¦      font-awesome.css
+©¦  ©¦      login-register.css
+©¦  ©¦      orionicons.css
+©¦  ©¦      style.blue.css
+©¦  ©¦      style.default.css
+©¦  ©¦      style.green.css
+©¦  ©¦      style.pink.css
+©¦  ©¦      style.red.css
+©¦  ©¦      style.sea.css
+©¦  ©¦      style.violet.css
+©¦  ©¦      
+©¦  ©À©¤fonts
+©¦  ©¦  ©¦  fontawesome-webfont.eot
+©¦  ©¦  ©¦  fontawesome-webfont.svg
+©¦  ©¦  ©¦  fontawesome-webfont.ttf
+©¦  ©¦  ©¦  fontawesome-webfont.woff
+©¦  ©¦  ©¦  FontAwesome.otf
+©¦  ©¦  ©¦  glyphicons-halflings-regular.eot
+©¦  ©¦  ©¦  glyphicons-halflings-regular.svg
+©¦  ©¦  ©¦  glyphicons-halflings-regular.ttf
+©¦  ©¦  ©¦  glyphicons-halflings-regular.woff
+©¦  ©¦  ©¦  orion-font.woff
+©¦  ©¦  ©¦  orion-font.woff2
+©¦  ©¦  ©¦  
+©¦  ©¦  ©¸©¤timelineicons
+©¦  ©¦          ecoico.dev.svg
+©¦  ©¦          ecoico.eot
+©¦  ©¦          ecoico.svg
+©¦  ©¦          ecoico.ttf
+©¦  ©¦          ecoico.woff
+©¦  ©¦          license.txt
+©¦  ©¦          Read Me.txt
+©¦  ©¦          
+©¦  ©À©¤img
+©¦  ©¦      avatar-6.jpg
+©¦  ©¦      caching.svg
+©¦  ©¦      ch.svg
+©¦  ©¦      cloudimg.gif
+©¦  ©¦      DNS.png
+©¦  ©¦      favicon.ico
+©¦  ©¦      Gear.gif
+©¦  ©¦      loading.gif
+©¦  ©¦      overview.svg
+©¦  ©¦      pd.svg
+©¦  ©¦      proxied_n.svg
+©¦  ©¦      proxied_y.svg
+©¦  ©¦      select.svg
+©¦  ©¦      SSL.svg
+©¦  ©¦      statistic.svg
+©¦  ©¦      
+©¦  ©À©¤jquery
+©¦  ©¦      core.js
+©¦  ©¦      jquery.cookie.js
+©¦  ©¦      jquery.js
+©¦  ©¦      jquery.min.js
+©¦  ©¦      
+©¦  ©À©¤js
+©¦  ©¦  ©¦  bootstrap.bundle.js
+©¦  ©¦  ©¦  bootstrap.bundle.min.js
+©¦  ©¦  ©¦  bootstrap.js
+©¦  ©¦  ©¦  bootstrap.min.js
+©¦  ©¦  ©¦  carbon.js
+©¦  ©¦  ©¦  crsf.js
+©¦  ©¦  ©¦  dnsrecords.js
+©¦  ©¦  ©¦  front.js
+©¦  ©¦  ©¦  index.js
+©¦  ©¦  ©¦  jq-paginator.js
+©¦  ©¦  ©¦  login-register.js
+©¦  ©¦  ©¦  sweetalert.min.js
+©¦  ©¦  ©¦  
+©¦  ©¦  ©¸©¤popper.js
+©¦  ©¦      ©¦  popper-utils.js
+©¦  ©¦      ©¦  popper-utils.min.js
+©¦  ©¦      ©¦  popper.js
+©¦  ©¦      ©¦  popper.min.js
+©¦  ©¦      ©¦  
+©¦  ©¦      ©À©¤esm
+©¦  ©¦      ©¦      popper-utils.js
+©¦  ©¦      ©¦      popper-utils.min.js
+©¦  ©¦      ©¦      popper.js
+©¦  ©¦      ©¦      popper.min.js
+©¦  ©¦      ©¦      
+©¦  ©¦      ©¸©¤umd
+©¦  ©¦              popper-utils.js
+©¦  ©¦              popper-utils.min.js
+©¦  ©¦              popper.js
+©¦  ©¦              popper.min.js
+©¦  ©¦              
+©¦  ©¸©¤webfonts
+©¦          fa-brands-400.eot
+©¦          fa-brands-400.svg
+©¦          fa-brands-400.ttf
+©¦          fa-brands-400.woff
+©¦          fa-brands-400.woff2
+©¦          fa-regular-400.eot
+©¦          fa-regular-400.svg
+©¦          fa-regular-400.ttf
+©¦          fa-regular-400.woff
+©¦          fa-regular-400.woff2
+©¦          fa-solid-900.eot
+©¦          fa-solid-900.svg
+©¦          fa-solid-900.ttf
+©¦          fa-solid-900.woff
+©¦          fa-solid-900.woff2
+©¦          
+©¸©¤templates
+        forms.html
+        index.html
+        
