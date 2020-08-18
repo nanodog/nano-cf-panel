@@ -1,0 +1,5 @@
+simplejson
+uwsgi
+CloudFlare
+django-cors-headers
+APScheduler

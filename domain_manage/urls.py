@@ -35,4 +35,6 @@ urlpatterns = [
     url(r'^cache',cache),
     url(r'^ssl',ssl),
     url(r'^analytics',dashboard),
+    url(r'^is_monitor',is_monitor_on),
+    url(r'^monitors',monitors),
  ]

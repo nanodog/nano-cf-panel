@@ -324,12 +324,12 @@ $(document).ready(function(){
             $(this).siblings("#im").show();
             });
  //function for selecting a record type
-            $("#table_body").on("click",".s_type a",function(){
+            $("body").on("click",".s_type a",function(){
                var button=$(this).parent().parent().siblings("button");
                button.html($(this).text());
             });
 //function for selecting a record ttl
-            $("#table_body").on("click",".d_ttl a",function(){
+            $("body").on("click",".d_ttl a",function(){
                var button=$(this).parent().parent().siblings("button");
                button.html($(this).text());
             });
@@ -338,6 +338,11 @@ $(document).ready(function(){
                  tr="<tr><td> </td><td><input type='text' placeholder='' value='' class='form-control name' style='background-color: #fff;'></td><td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle d_type' data-default=''> </button><div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'><div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item'>A</a><a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a><a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a><a href='JavaScript:void(0);' class='dropdown-item'>TXT</a><a href='JavaScript:void(0);' class='dropdown-item'>MX</a><a href='JavaScript:void(0);' class='dropdown-item'>SPF</a><a href='JavaScript:void(0);' class='dropdown-item'>LOC</a><a href='JavaScript:void(0);' class='dropdown-item'>SRV</a></div></div></td><td><input type='text' placeholder='' value='' class='form-control valu' style='background-color: #fff;'></td><td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'  class='btn btn-outline-primary dropdown-toggle d_ttl'  data-default=''></button><div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'><div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item'>1</a><a href='JavaScript:void(0);' class='dropdown-item'>120</a><a href='JavaScript:void(0);' class='dropdown-item'>300</a><a href='JavaScript:void(0);' class='dropdown-item'>600</a><a href='JavaScript:void(0);' class='dropdown-item'>1800</a><a href='JavaScript:void(0);' class='dropdown-item'>3600</a></div></div></td><td></td><td><img src='/static/img/proxied_n.svg'  type='image/svg+xml'data-proxied='false' data-proxied='false' class='add_proxy btn btn-sm-diy' /></td><td style='' class='add_cancel'><input type='button' value='取消' class='btn btn-outline-primary '></td><td style='' class='add_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td></tr>"
                   $("#table_body").prepend(tr);
              });
+             $("body").on("click",".add_m",function(){
+                  tr="<tr><td></td><td><input type='text' placeholder='' value='' class='form-control name' style='background-color: #fff;'></td><td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle d_type' data-default=''> </button><div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'><div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item'>A</a><a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a><a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a></div></div></td><td><input type='text' placeholder='' value='' class='form-control valu' style='background-color: #fff;'></td><td class=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default=''></button><div class='dropdown-menu' x-placement='top-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(773px, -5px, 0px);'><div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item'>5</a><a href='JavaScript:void(0);' class='dropdown-item'>10</a><a href='JavaScript:void(0);' class='dropdown-item'>15</a><a href='JavaScript:void(0);' class='dropdown-item'>30</a><a href='JavaScript:void(0);' class='dropdown-item'>60</a></div></div></td><td style='' class='m_cancel'><input type='button' value='取消' class='btn btn-outline-primary '></td><td style='' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td></tr>"
+                  $("#motable_body").prepend(tr);
+               });
+
 //function for updating the record
       $("#table_body").on("click",".update",function(){
                                 $(".ico_loading").show();
@@ -421,7 +426,7 @@ $(document).ready(function(){
            });
 
 // function for cancel adding edictor
-            $("#table_body").on("click",".add_cancel",function(){
+            $("body").on("click",".m_cancel",function(){
                   $(this).parent().remove();
            });
 //funtion for change proxied_status at being adding new record
@@ -645,6 +650,305 @@ $("#table_body").on("click",".add_proxy",function(){
   $("body").on("click",".c_cancel",function(){
        $(this).parents(".swal-overlay--show-modal").remove()
   })
+
+
+//function for monitor
+$(".monitor").click(function(){
+      html="<div class='row2'> <div class='ssl-card monitor-card'> <div class='ssl-card-header'> <h3 class='ssl-card-title'><p>宕机监控（当前共三个监控节点）</p></h3>  </div> <p>重庆电信: 广州联通: 北京移动: </p><div class='ssl-card-header monitor_header'> <div class='ssl-card-options'> <p>开启/关闭</p> <label class='custom-switch  monitor_switch' statue='off' style='float:right;'> <input type='checkbox' value='1' class='custom-switch-input' disabled='disabled'> <span class='custom-switch-indicator'></span> </label> </div> </div> </div><div class='card fy monitor_card ' style='display:none'> <div class='card-header'> <p class='text-uppercase mb-0 button--text-thick' id='drop_name' align='center' data_zid="+$(".current_zone").attr("data_id")+">"+$(".current_zone").find(".zone-txt").html()+"</p> <input type='submit' value='+添加监控' class='btn btn-outline-primary add_m button--text-thick'> </div> <div class='card-body'> <table class='table table-hover card-text'> <thead> <tr><th>是否已宕机切换</th> <th>监控地址</th> <th>记录类型</th> <th>宕机切换地址</th> <th>监控频率(分)</th> <th>操作</th> </tr> </thead> <tbody id='motable_body'></tbody> </table> </div> </div> </div>"
+      $(".ssl_menu").css("display","none");
+      $('.rd').css('display','none');
+      $(".ico_loading").show();
+      $(".domain_lists").html(html)
+      data={"name":$(".current_zone").find(".zone-txt").html()}
+      $.ajax({
+            url:"/manage/is_monitor",
+            type:"GET",
+            data:data,
+            dataType:"json",
+            success:function(data){
+                    console.log(data)
+                    if(data[0].status=="success"){
+                       if(data[0].switch=="off"){
+                        $(".monitor_switch").attr("statue","off");
+                        $(".monitor_switch").children("input").prop("checked",false);
+                        $(".ico_loading").hide();
+                       }else{
+                             $(".monitor_switch").attr("statue","on");
+                             $(".monitor_switch").children("input").prop("checked",true);
+                             if(data[0].mores=="no"){
+                              $(".monitor_card").show()
+                              $(".ico_loading").hide();
+                             }else{
+                                   list=data[1]
+                                   for(i in list){
+                                    tr="<tr><td class='switch_state'> <p></p> </td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+" disabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                    $("#motable_body").append(tr);
+                                    if(list[i].state=="switched"){
+                                          $(".switch_state").find("p").html("已宕机切换")
+                                    }else{
+                                         $(".switch_state").find("p").html("未宕机")
+                                    }
+                                   }                                  
+                                    $(".ico_loading").hide();
+                                    $(".monitor_card").show()
+                             }
+                       }                      
+                    }else if(data[0].status=="not_login"){
+                       setTimeout(function(){window.location.replace("/")},"200");
+                    }else{
+                          swal("Wrong",data[0].message,"error");
+                          $(".ico_loading").hide();
+                    }
+                    },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                    swal('ERROR!','connection timeout!','error');
+                    $(".ico_loading").hide();
+                    },
+      });
+
+  });
+  //monitor_switch
+  $("body").on("click",".monitor_switch",function(){
+      if($(this).attr("statue")=="off"){
+            state="on"
+            $(this).attr("statue","on");
+            $(this).children("input").prop("checked",true);
+            $(".monitor_card").show();
+      }else{
+            state="off"
+            $(this).attr("statue","off");
+            $(this).children("input").prop("checked",false);
+            $(".monitor_card").hide();
+      }
+      $.ajax({
+            url:"/manage/monitors",
+            type:"POST",
+            data:{"action":"change_switch",
+                  "state":state,
+                  "name":$(".current_zone").find(".zone-txt").html(),
+                 },
+            dataType:"json",
+            success:function(data){
+                    if(data[0].status=="success"){
+                        var tr;
+                        if(data[0].switch=="off"){
+                              $(".monitor_switch").attr("statue","off");
+                              $(".monitor_switch").children("input").prop("checked",false);
+                             }else{
+                                   if(data[0].mores=="no"){
+                                    $(".monitor_card").show()
+                                   }else{
+                                         list=data[1]
+                                         for(i in list){
+                                          if(list[i].state=="switched"){
+                                                tr+="<tr><td .switch_state> <p>已宕机切换</p></td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+"d isabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                                
+                                          }else{
+                                                tr+="<tr><td .switch_state> <p>未宕机</p></td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+"d isabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"                                               
+                                                
+                                          }
+                                        }   
+                                        $("#motable_body").html(tr); 
+                                   }
+                             }              
+                    }else if(data[0].status=="not_login"){
+                       setTimeout(function(){window.location.replace("/")},"200");
+                    }else{
+                          swal("Wrong",data[0].message,"error");
+                          if($(".monistor_switch").attr("statue")=="off"){
+                              state="on"
+                              $(".monitor_switch").attr("statue","on");
+                              $(".monitor_switch").children("input").prop("checked",true);
+                              $(".monitor_card").show();
+                        }else{
+                              state="off"
+                              $(".monitor_switch").attr("statue","off");
+                              $(".monitor_switch").children("input").prop("checked",false);
+                              $(".monitor_card").hide();
+                        }
+                    }
+                    },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                    swal('ERROR!','connection timeout!','error');
+                    if($(".monistor_switch").attr("statue")=="off"){
+                        $(".monitor_switch").attr("statue","on");
+                        $(".monitor_switch").children("input").prop("checked",true);
+                        $(".monitor_card").show();
+                  }else{
+                        $(".monitor_switch").attr("statue","off");
+                        $(".monitor_switch").children("input").prop("checked",false);
+                        $(".monitor_card").hide();
+                  }
+                    },
+      });      
+
+  })
+//monitor update
+function monitor_update(obj){
+      $.ajax({
+            url:"/manage/is_monitor",
+            type:"GET",
+            data:data,
+            dataType:"json",
+            success:function(data){
+                    if(data[0].status=="success"){
+                                   list=data[1]
+                                    for(i in list){
+                                    if(list[i].state=="switched"){
+                                          tr+="<tr><td .switch_state><p>已宕机切换</p> </td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+" disabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                    }else{
+                                          tr+="<tr><td .switch_state><p>未宕机</p> </td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+" disabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                    }
+                                   } 
+                                    $("#motable_body").html(tr);                                
+                                    $(".ico_loading").hide();                     
+                    }else if(data[0].status=="not_login"){
+                       setTimeout(function(){window.location.replace("/")},"200");
+                    }else{
+                          swal("Wrong",data[0].message,"error");
+                          $(".ico_loading").hide();
+                    }
+                    },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                    swal('ERROR!','connection timeout!','error');
+                    $(".ico_loading").hide();
+                    },
+      });
+}
+//monitor delete
+$("body").on("click",".m_del",function(){
+      name=$(this).parents("td").siblings("td:eq(1)").find("input").val()
+      swal({
+      title: "Are you sure?",
+      text: "deleted it!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      }).then((willDelete) => {
+               if (willDelete) {
+               $.ajax({
+               url:"/manage/monitors",
+               timeout:20000,
+               type:"POST",
+               data:{
+                      "action": "m_delete",
+                      "name":name,
+                     },
+               dataType:"json",
+               beforeSend:function(xhr){
+                         var csrftokens = $.cookie('csrftoken');
+                         xhr.setRequestHeader("X-CSRFToken",csrftokens);
+                         $(".ico_loading").css('display','block');
+               },
+               success:function(data){
+                         if(data[0].status=="success"){
+                            swal({title: "success",icon: "success",button: false,timer:1500,});
+                            $(".ico_loading").hide();
+                            monitor_update();
+                         }else if(data[0].status=="not_login"){
+                            setTimeout(function(){window.location.replace("/")},"200");
+                         }else{
+                               swal("Wrong",data[0].message,"error");
+                               $(".ico_loading").hide();
+                               monitor_update();
+                         }
+                         },
+               error:function(XMLHttpRequest, textStatus, errorThrown){
+                         swal('ERROR!','connection timeout!','error');
+                         $(".ico_loading").hide();
+                         add_update();
+                         },
+                 });
+                 }else{
+                    return false;
+                 }
+});
+});
+//monitor submit
+$("body").on("click",".m_submit",function(){
+      $(".ico_loading").show();
+      $(this).children("input").attr("disabled",true);
+      $(this).siblings(".add_cancel").children("input").attr("disabled",true)
+           add_data={
+                        'action':'add_monitor',
+                        'data_id':$("#drop_name").attr("data_zid"),
+                        'name':$(this).siblings().find(".name").val(),
+                        'type':$(this).siblings().find(".d_type").html(),
+                        'content':$(this).siblings().find(".valu").val(),
+                        'frequency':$(this).siblings().find(".d_ttl").html(),
+                        'domain':$(".current_zone").find(".zone-txt").html(),
+                        };
+
+         $.ajax({
+                 url:"/manage/monitors",
+                 type:"POST",
+                 data:add_data,
+                 dataType:"json",
+                 timeout:20000,
+                 success:function(data){
+                         var tr;
+                         if(data[0].status=="success"){
+                            swal({title: "success",icon: "success",button: false,timer:1500,});
+                            $(".ico_loading").hide();
+                            if(data[0].mores=="no"){
+                              $(".monitor_card").show()
+                             }else{
+                                   list=data[1]
+                                   for(i in list){
+                                    if(list[i].state=="switched"){
+                                          tr+="<tr><td .switch_state><p>已宕机切换</p> </td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+" disabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                    }else{
+                                          tr+="<tr><td .switch_state><p>未宕机</p> </td> <td><input type='text' placeholder="+list[i].probed+" value="+list[i].probed+" class='form-control name' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_type' data-default="+list[i].d_type+" disabled='disabled'>"+list[i].d_type+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>A</a> <a href='JavaScript:void(0);' class='dropdown-item'>AAAA</a> <a href='JavaScript:void(0);' class='dropdown-item'>CNAME</a> </div> </div></td> <td><input type='text' placeholder="+list[i].change_to+" value="+list[i].change_to+" class='form-control valu' style='background-color: rgb(233, 236, 239);' readonly='readonly'></td> <td><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle d_ttl' data-default="+list[i].frequency+" disabled='disabled'>"+list[i].frequency+" </button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(236px, 254px, 0px);'> <div class='s_type' style='height:200px;width: auto;overflow-y:scroll;'> <a href='JavaScript:void(0);' class='dropdown-item'>5</a> <a href='JavaScript:void(0);' class='dropdown-item'>10</a> <a href='JavaScript:void(0);' class='dropdown-item'>20</a> <a href='JavaScript:void(0);' class='dropdown-item'>30</a> <a href='JavaScript:void(0);' class='dropdown-item'>60</a> </div> </div></td> <td style='display: none;' class='mocancel'><input type='button' value='取消' class='btn btn-outline-primary'></td> <td style='display: none;' class='m_submit'><input type='button' value='提交' class='btn btn-outline-primary'></td> <td id='im' class='' style=''><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' class='btn btn-outline-primary dropdown-toggle'>操作</button> <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(652px, 194px, 0px);' x-out-of-boundaries=''> <a href='JavaScript:void(0);' class='dropdown-item moedit'>编辑</a> <div role='separator' class='dropdown-divider'></div> <a href='JavaScript:void(0);' class='dropdown-item m_del'>删除</a> </div></td> </tr>"
+                                    }
+                                  } 
+                              $("#motable_body").html(tr);  
+                             }
+                         }else if(data[0].status=="not_login"){
+                              setTimeout(function(){window.location.replace("/")},"200");
+                           }else{
+                              swal("Wrong",data[0].message,"error");
+                              $(".ico_loading").hide();
+                        }
+                         },
+                 error:function(XMLHttpRequest, textStatus, errorThrown){
+                         swal('ERROR!','connection timeout!','error');
+                         $(".ico_loading").hide();
+                         },
+                });
+
+    });
+
+  $("body").on("click",".moedit",function(){
+      var input=$(this).parent().parent().siblings().find(".form-control");
+      var button1=$(this).parent().parent().siblings().find(".d_type");
+      var button2=$(this).parent().parent().siblings().find(".d_ttl");
+      $(this).parent().parent().hide();
+      $(this).parent().parent().siblings(".mocancel").show();
+      $(this).parent().parent().siblings(".m_submit").show();
+      input.removeAttr("readonly");
+      button1.removeAttr("disabled");
+      button2.removeAttr("disabled");
+      input.css("background-color","#fff");
+   });
+   $("body").on("click",".mocancel",function(){
+      $(this).siblings().find(".form-control").each(function(){
+           $(this).attr("readonly","true");
+           $(this).css("background-color","#e9ecef");
+           $(this).val($(this).val());
+      });
+      button1=$(this).siblings().find(".d_type")
+      button1.attr("disabled","true");
+      button2=$(this).siblings().find(".d_ttl")
+      button2.attr("disabled","true");
+      button1.html(button1.attr("data-default"));
+      button2.html(button2.attr("data-default"));
+      $(this).siblings(".m_submit").hide();
+      $(this).hide();
+      $(this).siblings("#im").show();
+      });
+
+
+
 //function for adding the cname through CloudFalre partner
   $("body").on("click",".c_add",function(){
            data={
@@ -697,6 +1001,7 @@ $("#table_body").on("click",".add_proxy",function(){
  };
    $('.more_zone .zone').click(function(){
    current_zone($(this));
+   $(".ssl_menu").css("display","none");
    });
  //for purging caching windows
 $('.caching').click(function(){
@@ -721,7 +1026,7 @@ $('.caching').click(function(){
            h="浏览器缓存周期(TTL)"
            i="确定Cloudflare指示访问者的浏览器缓存文件的时间。在此期间，浏览器从其本地缓存中加载文件，从而加快了页面加载速度"
          }
-  var html="<div class='col-lg-4 col-md-4'><div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+a+"</h3></div><div class='ssl-card-body'><div class='ssl-card-options'><a href='#' class='btn btn-outline-primary btn-sm purge_all'>Purge All</a><a href='#' class='btn btn-outline-primary btn-sm'>Others</a></div><p>"+b+"</p><p>"+c+"</p></div> </div></div> <div class='col-lg-3 col-xl-3'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>cache level</h3></div><div class='ssl-card-header '>      <h1 class='cache-card-title' style=''>Standard</h1>      <div class='ssl-card-options'>        <label class='custom-switch agg c_switch 'setting='aggressive' ty='agg'  style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div><div class='ssl-card-header '>      <h1 class='cache-card-title' style=''>Ignore query string</h1>      <div class='ssl-card-options'>        <label class='custom-switch bas c_switch' setting='basic' ty='bas' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div><div class='ssl-card-header'>      <h1 class='cache-card-title' style=''>No query string</h1>      <div class='ssl-card-options'>        <label class='custom-switch sim c_switch' setting='simplified' ty='sim' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'>Determine how much of your website’s static content you want Cloudflare to cache. Increased caching can speed up page load time.</div>  </div></div><div class='col-lg-3 col-xl-3'><div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+h+"</h3></div><div class='ssl-card-header'> <div class='' style='margin auto; text-align:center; left: 50%;'><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle cttl_options' data-default='1'>none</button><div class='dropdown-menu cache_ttl' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(24px, 92px, 0px);'><div class='cttl_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item' h_long='0'>none</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='1800'>30minutes</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='3600'>1hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='7200'>2hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='180'>3hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='14400'>4hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='18000'>5hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='28800'>8hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='43200'>12hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='57600'>16hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='72000'>20hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='86400'>1day</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='172800'>2days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='259200'>3days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='345600'>4days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='432000'>5days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='691200'>8days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='2678400'>1month</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='5356800'>2months</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='16070400'>6months</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='31536000'>1year</a></div></div> </div><a href='#' class='btn btn-outline-primary cttl_save'>Save</a></div><div class='ssl-card-body'>"+i+"</div></div></div><div class='col-lg-4 col-xl-4'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+d+"</h3></div><div class='ssl-card-header'>            <div class='ssl-card-options'>        <label class='custom-switch  dm_switch' statue='on' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'><p>"+e+"</p><p>"+f+"</p></div>  </div></div><div class='col-lg-3 col-xl-3'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>Always Online</h3></div><div class='ssl-card-header'>            <div class='ssl-card-options'>        <label class='custom-switch  always_switch' statue='' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'>If your server goes down, Cloudflare will serve your website’s static pages from our cache.</div>  </div></div>";
+  var html="<div class='col-lg-4 col-md-4'><div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+a+"</h3></div><div class='ssl-card-body'><div class='ssl-card-options'><a href='#' class='btn btn-outline-primary btn-sm purge_all'>Purge All</a><a href='#' class='btn btn-outline-primary purge_other btn-sm'>Others</a></div><p>"+b+"</p><p>"+c+"</p></div> </div></div> <div class='col-lg-3 col-xl-3'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>cache level</h3></div><div class='ssl-card-header '>      <h1 class='cache-card-title' style=''>Standard</h1>      <div class='ssl-card-options'>        <label class='custom-switch agg c_switch 'setting='aggressive' ty='agg'  style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div><div class='ssl-card-header '>      <h1 class='cache-card-title' style=''>Ignore query string</h1>      <div class='ssl-card-options'>        <label class='custom-switch bas c_switch' setting='basic' ty='bas' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div><div class='ssl-card-header'>      <h1 class='cache-card-title' style=''>No query string</h1>      <div class='ssl-card-options'>        <label class='custom-switch sim c_switch' setting='simplified' ty='sim' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input' current_status='none'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'>Determine how much of your website’s static content you want Cloudflare to cache. Increased caching can speed up page load time.</div>  </div></div><div class='col-lg-3 col-xl-3'><div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+h+"</h3></div><div class='ssl-card-header'> <div class='' style='margin auto; text-align:center; left: 50%;'><button type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' readonly='readonly' class='btn btn-outline-primary dropdown-toggle cttl_options' data-default='1'>none</button><div class='dropdown-menu cache_ttl' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(24px, 92px, 0px);'><div class='cttl_type' style='height:200px;width: auto;overflow-y:scroll;'><a href='JavaScript:void(0);' class='dropdown-item' h_long='0'>none</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='1800'>30minutes</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='3600'>1hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='7200'>2hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='180'>3hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='14400'>4hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='18000'>5hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='28800'>8hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='43200'>12hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='57600'>16hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='72000'>20hours</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='86400'>1day</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='172800'>2days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='259200'>3days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='345600'>4days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='432000'>5days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='691200'>8days</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='2678400'>1month</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='5356800'>2months</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='16070400'>6months</a><a href='JavaScript:void(0);' class='dropdown-item' h_long='31536000'>1year</a></div></div> </div><a href='#' class='btn btn-outline-primary cttl_save'>Save</a></div><div class='ssl-card-body'>"+i+"</div></div></div><div class='col-lg-4 col-xl-4'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>"+d+"</h3></div><div class='ssl-card-header'>            <div class='ssl-card-options'>        <label class='custom-switch  dm_switch' statue='on' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'><p>"+e+"</p><p>"+f+"</p></div>  </div></div><div class='col-lg-3 col-xl-3'>  <div class='ssl-card'><div class='ssl-card-header'><h3 class='ssl-card-title'>Always Online</h3></div><div class='ssl-card-header'>            <div class='ssl-card-options'>        <label class='custom-switch  always_switch' statue='' style='float:right;'>          <input type='checkbox' value='1' class='custom-switch-input'>          <span class='custom-switch-indicator'></span>        </label>      </div>    </div>    <div class='ssl-card-body'>If your server goes down, Cloudflare will serve your website’s static pages from our cache.</div>  </div></div>";
   $('.rd').css('display','none');
   $('.domain_lists').html(html);
                       $.ajax({
@@ -2037,6 +2342,7 @@ $("body").on("click",".un_gap a",function(){
                                    },
               });
             });
+
 //function for dashboard
 $("body").on('click','.overview',function(){
 var a,b,c,d;

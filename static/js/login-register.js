@@ -1,15 +1,8 @@
-/*
- *
- * login-register modal
- * Autor: Creative Tim
- * Web-autor: creative.tim
- * Web script: #
- * 
- */
+
 function showRegisterForm(){
-    $('.loginBox').fadeOut('fast',function(){
+    $('.loginBox, .APIloginBox').fadeOut('fast',function(){
         $('.registerBox').fadeIn('fast');
-        $('.login-footer').fadeOut('fast',function(){
+        $('.login-footer, .APIlogin-footer').fadeOut('fast',function(){
             $('.register-footer').fadeIn('fast');
         });
         $('.modal-title').html('Register with');
@@ -18,10 +11,21 @@ function showRegisterForm(){
        
 }
 function showLoginForm(){
-    $('#loginModal .registerBox').fadeOut('fast',function(){
+    $('#loginModal .registerBox, .APIloginBox').fadeOut('fast',function(){
         $('.loginBox').fadeIn('fast');
-        $('.register-footer').fadeOut('fast',function(){
+        $('.APIlogin-footer, .register-footer').fadeOut('fast',function(){
             $('.login-footer').fadeIn('fast');    
+        });
+        
+        $('.modal-title').html('Login with');
+    });       
+     $('.error').removeClass('alert alert-danger').html(''); 
+}
+function showAPILoginForm(){
+    $('#loginModal .registerBox, .loginBox ').fadeOut('fast',function(){
+        $('.APIloginBox').fadeIn('fast');
+        $('.login-footer, .register-footer').fadeOut('fast',function(){
+            $('.APIlogin-footer').fadeIn('fast');    
         });
         
         $('.modal-title').html('Login with');
@@ -97,6 +101,54 @@ function click_login(){
 
       });
 }
+//APILOGIN
+function click_APIlogin(){
+    lang=$(".current_lang").find("span").html();
+    var user_mail= $("#api_email").val();
+    var user_pass= $("#api_pass").val();
+    var div1=document.getElementById("APIlogin-loading");
+    var input1= document.getElementById("login_api");
+    var divban=document.getElementById("ban1c");
+    ban1c(divban);
+    loading(div1,input1);
+    $.ajax({
+    url:"/APIlogin",
+    type:"POST",
+    data:{
+    "usermail": user_mail,
+    "user_api_key": user_pass,
+    "language":lang,
+    },
+    timeout:20000,
+    dataType:"json",
+    success:function(data) {
+      var div1=document.getElementById("APIlogin-loading");
+      var input1= document.getElementById("login_api");
+            if(data.result=='success'){
+                div1.style.display = 'none';
+                divban.style.display= 'none';
+                setTimeout(function(){window.location.replace("manage/b")},"200");
+            }else if(data.result=="error"){
+                div1.style.display = 'none';
+                divban.style.display= 'none';
+                input1.disabled='';
+                shakeModal(data.msg);
+            }else{
+                div1.style.display = 'none';
+                divban.style.display= 'none';
+                input1.disabled='';
+                shakeModal("Server error: fail to request from CloudFlare.")
+            }
+        },
+    error:function(XMLHttpRequest, textStatus, errorThrown){
+            div1.style.display = 'none';
+            divban.style.display= 'none';
+            input1.disabled='';
+            shakeModal('Server error: Connection timed out');
+     },
+
+      });
+}
 function click_register(){
     lang=$(".current_lang").find("span").html();
     var user_mail=$("#regmail").val();
@@ -136,7 +188,7 @@ function click_register(){
                 div1.style.display = 'none';
                 divban.style.display= 'none';
                 input1.disabled='';
-                shakeModal(data.msg);
+                shakeModal("data.msg");
             }else{
                 div1.style.display = 'none';
                 divban.style.display= 'none';

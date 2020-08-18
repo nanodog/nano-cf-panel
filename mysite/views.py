@@ -7,6 +7,7 @@ from django.shortcuts import render,redirect
 from domain_manage.views import *
 import simplejson as json
 from mysite.settings import host_key
+import CloudFlare
 def current_datetime(request):
     now = datetime.datetime.now()
     t = Template("<html><body>It is now {{ current_date }}.</body></html>")
@@ -48,10 +49,12 @@ def to_login(request):
             request.session['language']=request.POST.get('language')
             request.session['user_key']=cf_data_response['user_key']
             request.session['user_api_key']=cf_data_response['user_api_key']
+            request.session.save()
             succ_info = {"result": "success", "msg": 'none'}
             succ_info = json.dumps(succ_info)
             return HttpResponse(succ_info)
      return is_login(request)
+
 
 def to_register(request):
     if(request.method == 'POST'):
@@ -74,11 +77,39 @@ def to_register(request):
             request.session['language'] = request.POST.get('language')
             request.session['user_key']=cf_data_response['user_key']
             request.session['user_api_key']=cf_data_response['user_api_key']
+            request.session.save()
             succ_info = {"result": "success", "msg": 'none'}
             succ_info = json.dumps(succ_info)
-            return HttpResponse(succ_info)
+            try:
+                models.Session_Mail.objects.get(mail=request.POST.get('usermail'))
+                return HttpResponse(succ_info)
+            except ObjectDoesNotExist:
+                user=models.Session_Mail(sessionid=request.session.session_key,mail=request.POST.get('usermail'))
+                user.save()
+                return HttpResponse(succ_info)
     return is_login(request)
 
+def api_to_login(request):
+    try:
+        email=request.POST.get('usermail')
+        cf = CloudFlare.CloudFlare(email, request.POST.get('user_api_key'))
+        response = cf.user.get()
+        if response['email']==email:
+            request.session['is_login']=True
+            request.session['user_mail']=request.POST.get('usermail')
+            request.session['language']=request.POST.get('language')
+            request.session['user_api_key']=request.POST.get('user_api_key')
+            request.session.save()
+            succ_info = json.dumps({"result": "success", "msg": 'none'})
+            return HttpResponse(succ_info)
+        else:
+            err_info=json.dumps({"result":"error","msg":"error,please check your input"})
+            return HttpResponse(err_info)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        err_info=json.dumps({"result":"error","msg":"error,please check your input"})
+        return HttpResponse(err_info)
+    except Exception as e:
+        return HttpResponse(err_info)
 
 def login(request):
     try:

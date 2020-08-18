@@ -9,6 +9,10 @@ from django.shortcuts import render,redirect
 from mysite.views import *
 import CloudFlare
 from mysite.settings import host_key
+from . import models
+from domain_manage.monitor import *
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import MultipleObjectsReturned
 
 ########## global value
 record_error1 = HttpResponse(json.dumps([{'status':'error','message':'api call failed,please try again.'}]))
@@ -33,6 +37,13 @@ def domain_get_first(request):
         zones = cf.zones.get()
         if len(zones):
             request.session['account_id'] = zones[0]['account']['id']
+            for zone in zones:
+                if zone['status']=="active":
+                    try:
+                        models.Session_Mail.objects.get(domain=zone['name'])
+                    except ObjectDoesNotExist:
+                        user=models.Session_Mail(mail=request.session['user_mail'],domain=zone['name'],switch='off')
+                        user.save()
         else:
             zones=0
         return render(request, 'forms.html', {"zones": zones,"user_name":request.session['user_mail'],"lang":request.session['language']})
@@ -84,14 +95,13 @@ def record_set(request):
         if request.POST.get('action')=="proxied":
             if request.POST.get('proxied') == "true":
                 domain_info = {'name': request.POST.get('name'), 'type': request.POST.get('type'),
-                               'content': request.POST.get('content'), 'ttl': eval(request.POST.get('ttl')),
+                               'content': request.POST.get('content'), 'ttl': 1,
                                'proxied': True}
             else:
                 domain_info = {'name': request.POST.get('name'), 'type': request.POST.get('type'),
                                'content': request.POST.get('content'), 'ttl': eval(request.POST.get('ttl')),
                                'proxied': False}
             cf_data=cf.zones.dns_records.put(zone_id, dns_record_id, data=domain_info)
-            print(domain_info)
             if cf_data['id']==request.POST.get('dns_record_id'):
                record_list.append({'status': 'success', 'message':'none'})
             else:
@@ -99,20 +109,20 @@ def record_set(request):
             return HttpResponse(json.dumps(record_list))
         elif(request.POST.get("action")=="add_record"):
             zone_id=request.POST.get('zone_id')
-            if request.POST.get('proxied') == "true":
-                domain_info = {'name': request.POST.get('name'),
-                               'type': request.POST.get('type'),
-                               'content': request.POST.get('content'),
-                               'ttl': eval(request.POST.get('ttl')),
-                               'proxied': True}
+            print(request.POST.get('proxied'))
+            if request.POST.get('proxied')=='true':
+                domain_info = {'name': request.POST.get('name'), 'type': request.POST.get('type'),
+                               'content': request.POST.get('content'), 'ttl': 1,
+                               'proxied': False}
+                print(domain_info)
             else:
                 domain_info = {'name': request.POST.get('name'), 'type': request.POST.get('type'),
                                'content': request.POST.get('content'), 'ttl': eval(request.POST.get('ttl')),
                                'proxied': False}
                 record_list = []
-                print(domain_info)
                 cf_data =cf.zones.dns_records.post(request.POST.get('zone_id'), data=domain_info)
-                if cf_data['name'] == request.POST.get('name'):
+                print(cf_data)
+                if cf_data['content'] == request.POST.get('content'):
                     record_list.append({'status': 'success', 'message': 'none'})
                 else:
                     record_list.append({'status': 'false', 'message': 'please try it a while!'})
@@ -638,3 +648,161 @@ def dashboard(request):
             return HttpResponse(record_lists)
     except Exception as e:
           return record_error2
+
+def is_monitor_on(request):
+        result = []
+        record_lists=[]
+        if not request.session.get('is_login', False):
+            return record_error3
+        info=models.Session_Mail.objects.get(domain=request.GET.get("name"))
+        if info.mail==request.session['user_mail']:
+            if info.switch=='off':
+                result.append({'status':'success', 'switch':'off'})
+            else:
+                try:
+                    list=models.Mail_Records.objects.get(domain=request.GET.get("name"))
+                    d={'status':'success', 'switch':'on','mores':'yes','more':'dd'}
+                    result.append(d)
+                    record_lists.append({'probed':list.probed,'d_type':list.d_type,'change_to':list.change_to,'state':list.state,'frequency':list.frequency})
+                    result.append(record_lists)
+                except MultipleObjectsReturned:
+                    lists=models.Mail_Records.objects.filter(domain=request.GET.get("name"))
+                    d={'status':'success', 'switch':'on','mores':'yes','more':'dd'}
+                    result.append(d)
+                    for list in lists:
+                        record_lists.append({'probed':list.probed,'d_type':list.d_type,'change_to':list.change_to,'state':list.state,'frequency':list.frequency})
+                    result.append(record_lists)
+                except ObjectDoesNotExist:
+                    result.append({'status':'success', 'switch':'on','mores':'no'})
+                    print(json.dumps(result))
+        else:
+            return record_error3
+        return HttpResponse(json.dumps(result))
+
+def monitors(request):
+        result1 = []
+        record_lists1=[]
+    # try:
+        if not request.session.get('is_login', False):
+            return record_error3
+        if  request.POST.get("action")=="change_switch":
+            if models.Session_Mail.objects.get(domain=request.POST.get("name")).mail==request.session['user_mail']:
+                if request.POST.get("state")=="off":
+                    # print("here1")
+                    try:
+                        models.Session_Mail.objects.filter(domain=request.POST.get("name")).update(switch="off")
+                        list=models.Mail_Records.objects.get(domain=request.POST.get("name"))
+                        job1=sch.get_job(list.probed)
+                        if job1 is None:
+                            sch.start()
+                        job=sch.get_job(list.probed)
+                        job.pause()
+                        result1.append({'status':'success', 'switch':'off','mores':'no'})
+                        return HttpResponse(json.dumps(result1))
+                    except MultipleObjectsReturned:
+                        lists=models.Mail_Records.objects.filter(domain=request.POST.get("name"))
+                        job1=sch.get_job(lists[0].probed)
+                        if job1 is None:
+                            sch.start()
+                        for list in lists:
+                            job=sch.get_job(list.probed)
+                            job.pause()
+                        result1.append({'status':'success', 'switch':'off','mores':'no'})
+                        return HttpResponse(json.dumps(result1))
+                    except ObjectDoesNotExist:
+                        result1.append({'status':'success', 'switch':'off','mores':'no'})
+                        return HttpResponse(json.dumps(result1))
+                else:
+                    try:
+                        # print("here2")
+                        models.Session_Mail.objects.filter(domain=request.POST.get('name')).update(switch="on")
+                        try:
+                            models.Mail_Records.objects.get(domain=request.POST.get("name"))
+                            list=models.Mail_Records.objects.filter(domain=request.POST.get("name"))
+                            job=sch.get_job(list[0].probed)
+                            if job is None:
+                                sch.start()
+                            else:
+                                job.resume()
+                            result1.append({'status':'success', 'switch':'on','mores':'yes'})
+                            record_lists1.append({'probed':list[0].probed,'d_type':list[0].d_type,'change_to':list[0].change_to,'state':list[0].state,'frequency':list[0].frequency})
+                            return HttpResponse(json.dumps(result1))
+                        except ObjectDoesNotExist:
+                            result1.append({'status':'success', 'switch':'on','mores':'no'})
+                            return HttpResponse(json.dumps(result1))
+                        except MultipleObjectsReturned:
+                            lists=models.Mail_Records.objects.filter(domain=request.POST.get("name"))
+                            result1.append({'status':'success', 'switch':'on','mores':'yes'})
+                            job1=sch.get_job(lists[0].probed)
+                            if job1 is None:
+                                sch.start()
+                            for list in lists:
+                                job=sch.get_job(list.probed)
+                                job.resume()
+                                record_lists1.append({'probed':list.probed,'d_type':list.d_type,'change_to':list.change_to,'state':list.state,'frequency':list.frequency})
+                            result1.append(record_lists1)
+                            return HttpResponse(json.dumps(result1))
+                    except ObjectDoesNotExist:
+                        return record_error2
+            else:
+                return record_error3
+        elif request.POST.get("action")=="add_monitor":
+            result = []
+            record_lists=[]
+            if models.Session_Mail.objects.filter(domain=request.POST.get("domain"))[0].mail==request.session['user_mail']:
+                data={"aim":request.POST.get("name"),"user_mail":request.session['user_mail'],"user_api":request.session['user_api_key'],"data_id":request.POST.get("data_id"),"type":request.POST.get("type"),"content":request.POST.get("content")}
+                # try:
+                if 1:
+                    try:
+                        models.Mail_Records.objects.get(probed=data["aim"])
+                        if sch.get_job(data["aim"]) is None:
+                            sch.start()
+                        sch.reschedule_job(data["aim"], trigger='interval', minutes=int(request.POST.get("frequency")))
+                        job=sch.get_job(data["aim"])
+                        job.resume()
+                        r=models.Mail_Records.objects.get(probed=data["aim"])
+                        r.frequency=request.POST.get("frequency")
+                        r.d_type=data["type"]
+                        r.change_to=data["content"]
+                        r.save()
+                        lists=models.Mail_Records.objects.filter(domain=request.POST.get("domain"))
+                        result.append({'status':'success', 'switch':'on','mores':'yes'})
+                        for list in lists:
+                            record_lists.append({'probed':list.probed,'d_type':list.d_type,'change_to':list.change_to,'state':list.state,'frequency':list.frequency})
+                            result.append(record_lists)
+                        return HttpResponse(json.dumps(result))
+                    except ObjectDoesNotExist:
+                        sch.add_job(monitor_job,'interval',minutes=int(request.POST.get("frequency")),kwargs=data,id=data["aim"])
+                        user=models.Mail_Records(mail=request.session["user_mail"],domain=request.POST.get("domain"),probed=data["aim"],d_type=data["type"],change_to=data["content"],state="no",frequency=request.POST.get("frequency"))
+                        user.save()
+                        lists=models.Mail_Records.objects.filter(domain=request.POST.get("domain"))
+                        result.append({'status':'success', 'switch':'on','mores':'yes'})
+                        for list in lists:
+                            record_lists.append({'probed':list.probed,'d_type':list.d_type,'change_to':list.change_to,'state':list.state,'frequency':list.frequency})
+                            result.append(record_lists)
+                        return HttpResponse(json.dumps(result))
+                # except Exception as e:
+                    return record_error2
+            else:
+                return record_error3
+        elif request.POST.get("action")=="m_delete":
+            result=[]
+            try:
+                if models.Mail_Records.objects.get(probed=request.POST.get("name")).mail==request.session['user_mail']:
+                    models.Mail_Records.objects.get(probed=request.POST.get("name")).delete()
+                    if sch.get_job(request.POST.get("name")) is None:
+                         sch.start() 
+                    job=sch.get_job(request.POST.get("name"))
+                    job.remove()
+                    result.append({'status':'success'})
+                    return HttpResponse(json.dumps(result))
+                else:
+                    return record_error3            
+            except ObjectDoesNotExist:
+                result.append({'status':'success'})
+                return HttpResponse(json.dumps(result))
+
+
+
+    # except Exception as e:
+    #     return record_error2

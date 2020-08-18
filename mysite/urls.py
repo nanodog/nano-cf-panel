@@ -19,10 +19,10 @@ from mysite.views import *
 from .views import register
 urlpatterns = [
     url(r'^admin/', admin.site.urls,name='admin'),
-    url(r'^meta/', display_meta),
     url(r'^register',to_register),
     url(r'^login',login),
     url(r'^$',is_login),
     url(r'^manage/',include('domain_manage.urls')),
-    url(r'^logout',logout)
+    url(r'^logout',logout),
+    url(r'^APIlogin',api_to_login)
  ]

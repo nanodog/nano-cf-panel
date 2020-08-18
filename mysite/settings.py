@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['*']
 
 
 #session setting
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'  # 引擎（默认）
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'  # 引擎（默认）
 SESSION_COOKIE_NAME = "sessionid" # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）
 SESSION_COOKIE_PATH = "/"  # Session的cookie保存的路径（默认）
 SESSION_COOKIE_DOMAIN = None  # Session的cookie保存的域名（默认）
@@ -54,6 +54,12 @@ INSTALLED_APPS = [
     'domain_manage',
     #'corsheaders',
 ]
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'domian.db'),
+    }
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

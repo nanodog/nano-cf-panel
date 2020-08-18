@@ -249,7 +249,7 @@
     opacity: 0.5;
     z-index: 9999
     }
-    #register-loading,#login-loading{
+    #register-loading,#login-loading,#APIlogin-loading{
     display:none
     }
     #register-form.loading-icon,#login-loading.loading-icon{
