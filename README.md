@@ -204,12 +204,6 @@ uwsgi --ini panel.ini
 使用浏览器访问
 
 
-## 捐赠
-
-如果你对本项目有兴趣，并关注后续的更多改进，可以通过以下方式给予更多的动力
-
-<img src="https://i.loli.net/2020/03/03/7I9blUWr6PiXVA8.png" alt="X8QSZ`R4~G{(Y42`M64%FXC.png" style="zoom: 40%;" />
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
